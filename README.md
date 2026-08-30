@@ -1,22 +1,14 @@
-﻿# Intelligent Multimodal Fruit Sorting Robot
+<div align="center">
 
-An integrated multimodal robotic sorting system combining **visual perception, offline voice interaction, command understanding, real-time image processing, GUI monitoring, and robotic-arm execution**.
+# Intelligent Multimodal Fruit Sorting Robot
 
-The project follows a perception–decision–execution workflow:
+**A multimodal robotic sorting system integrating visual perception, offline voice interaction, command understanding, and robotic-arm control.**
 
-`	ext
-Offline Voice Command
-        ↓
-Command / Target Parsing
-        ↓
-YOLO Visual Perception
-        ↓
-Target Verification
-        ↓
-Robotic Arm Control
-        ↓
-Automatic Grasping & Sorting
-`
+`Vision` · `Speech` · `Interaction` · `Robotics` · `GUI`
+
+</div>
+
+---
 
 ## System Demo
 
@@ -26,125 +18,205 @@ Automatic Grasping & Sorting
        width="760">
 </p>
 
-Full-quality demo:
+<p align="center">
+  <strong>Voice command → target recognition → visual verification → robotic-arm grasping</strong>
+</p>
 
-ssets/demo/system_demo.mp4
+<p align="center">
+  <a href="assets/demo/system_demo.mp4">View the full-quality demo video</a>
+</p>
 
-## Repository Structure
+---
 
-`	ext
+## Overview
+
+This project implements an integrated **perception–decision–execution** pipeline for intelligent fruit sorting.
+
+The system receives an offline voice command, maps it to a target fruit, performs camera-based YOLO detection, verifies the target, and triggers a robotic-arm pickup sequence through serial communication.
+
+### Workflow
+
+```text
+Offline Voice Command
+        ↓
+Command Parsing
+        ↓
+YOLO Visual Detection
+        ↓
+Target Verification
+        ↓
+Robotic-Arm Control
+        ↓
+Automatic Grasping & Sorting
+```
+
+---
+
+## Core Modules
+
+| Module | Role | Main Technology |
+|---|---|---|
+| 👁️ **Vision** | Fruit detection, image acquisition, ONNX inference | YOLO, OpenCV, ONNX Runtime |
+| 🎙️ **Speech** | Offline voice-command reception | Serial communication |
+| 💬 **Interaction** | Command mapping and target dispatch | Queue-based task coordination |
+| 🤖 **Robot** | Robotic-arm motion and grasping | Serial bus servo control |
+| 🖥️ **GUI** | Camera feed, logs, system status | Tkinter |
+| ⚙️ **Configuration** | Hardware ports, camera index, model path | YAML / Python |
+
+> The complete integrated runtime is kept in `main.py` to preserve the original working hardware workflow.  
+> Supporting modules are organized by function for clarity and future modularization.
+
+---
+
+## Project Highlights
+
+| Item | Result |
+|---|---:|
+| Detection mAP@50 | **0.99499** |
+| Average detection time | **181.2 ms** |
+| Evaluation images | **500** |
+| Robotic-arm grasping success rate | **95.7%** |
+| Grasping trials | **50** |
+
+---
+
+## Supported Commands
+
+The current system supports target-directed sorting for:
+
+- 🍎 **Apple**
+- 🍊 **Orange**
+- 🍐 **Pear**
+
+---
+
+## 📁 Repository Structure
+
+```text
 Intelligent-Multimodal-Fruit-Sorting-Robot/
 │
-├── README.md
-├── main.py
-│
-├── vision/
-│   ├── model/
-│   │   └── best.onnx
+├── main.py                      # Integrated system entry point
+├── vision/                      # YOLO / image perception / ONNX
+│   ├── model/best.onnx
 │   ├── onnx_inference.py
 │   ├── export_onnx.py
 │   ├── simplify_onnx.py
 │   ├── hand_detection.py
 │   └── model_test.py
 │
-├── speech/
-│   └── README.md
-├── audio/
-│   └── README.md
-├── interaction/
-│   └── README.md
+├── speech/                      # Offline speech interface
+├── audio/                       # Audio-related extension interface
+├── interaction/                 # Command parsing and task dispatch
 ├── robot/
-│   └── arm_controller.py
-├── gui/
-│   └── README.md
+│   └── arm_controller.py        # Robotic-arm control
+├── gui/                         # GUI-related documentation / extension
+│
 ├── training/
 │   └── train_yolo.py
 ├── tools/
 │   └── check_annotations.py
 ├── configs/
 │   └── hardware.example.yaml
+│
 ├── assets/
-│   ├── images/
+│   ├── images/                  # Result figures
 │   └── demo/
 │       ├── system_demo.gif
 │       └── system_demo.mp4
 │
 ├── requirements.txt
+├── README.md
 ├── .gitignore
 └── LICENSE
-`
+```
 
-## Main System
+The repository is organized by **function**, while `main.py` preserves the complete integrated runtime so that the hardware-dependent workflow remains easy to understand and reproduce.
 
-main.py is the complete integrated runtime.
+---
 
-It currently contains:
+## Quick Start
 
-- Offline voice-command reception
-- Command-to-fruit mapping
-- YOLO-based visual detection
-- OpenCV camera acquisition
-- Tkinter real-time GUI
-- Multi-threaded task coordination
-- Robotic-arm serial control
-- Automatic fruit pickup cycles
+### 1. Install dependencies
 
-## Modalities
-
-### Vision
-The visual subsystem performs real-time image acquisition and YOLO-based fruit detection.
-
-### Speech
-An offline voice module provides recognized commands to the Python system through serial communication.
-
-### Audio
-The current implementation relies on the offline speech hardware for acoustic front-end processing. The udio/ directory is reserved for future direct waveform or microphone-array processing.
-
-### Interaction
-Recognized commands are mapped to sorting targets and dispatched to the vision and execution layers.
-
-### Robot
-The robotic-arm subsystem communicates with the servo controller through serial communication and executes predefined grasping sequences.
-
-### GUI
-The GUI displays the camera feed, target information, voice-command state, detection state, logs, and robotic-arm status.
-
-## Supported Target Commands
-
-- Apple
-- Orange
-- Pear
-
-## Installation
-
-`ash
+```bash
 pip install -r requirements.txt
-`
+```
 
-## Run
+### 2. Check hardware configuration
 
-From the repository root:
+Update the serial ports and camera index to match the connected devices.
 
-`ash
-python main.py
-`
+Reference configuration:
 
-Before running, make sure the serial ports and camera index match your hardware.
-
-Example values are documented in:
-
+```text
 configs/hardware.example.yaml
+```
 
-## Model
+### 3. Run the system
 
-The packaged ONNX model is stored at:
+```bash
+python main.py
+```
 
-ision/model/best.onnx
+---
 
-## Notes
+## Hardware Interfaces
 
-The current release intentionally keeps the complete working integration in main.py instead of aggressively splitting the runtime into many dependent Python modules. This keeps the original integrated system easy to inspect and reduces the risk of breaking hardware-dependent behavior, while the repository structure clearly separates vision, speech, audio, interaction, robot, GUI, configuration, training, and demonstration assets.
+| Component | Default Interface |
+|---|---|
+| Offline voice module | `COM8`, 9600 baud |
+| Robotic-arm controller | `COM13`, 9600 baud |
+| Camera | Index `1` |
+| Detection model | `vision/model/best.onnx` |
+
+These values may need to be changed for another computer or hardware setup.
+
+---
+
+## Main Runtime
+
+`main.py` integrates the complete system workflow:
+
+- voice-command reception;
+- command-to-fruit mapping;
+- real-time camera acquisition;
+- YOLO-based target detection;
+- target verification;
+- GUI visualization and status display;
+- robotic-arm serial communication;
+- automatic pickup-cycle execution;
+- multithreaded coordination between perception and control.
+
+---
+
+## Model and Utilities
+
+The final ONNX detector is stored at:
+
+```text
+vision/model/best.onnx
+```
+
+Additional utilities are provided for:
+
+- ONNX inference;
+- PyTorch-to-ONNX export;
+- ONNX simplification;
+- hand-detection experiments;
+- model testing;
+- annotation visualization;
+- YOLO training.
+
+---
+
+## Design Principle
+
+The repository is organized by function while keeping the original integrated runtime intact.
+
+This avoids unnecessary refactoring of hardware-dependent logic while making the project easier to read, reproduce, extend, and present.
+
+---
 
 ## License
 
-See LICENSE.
+See [`LICENSE`](LICENSE).
