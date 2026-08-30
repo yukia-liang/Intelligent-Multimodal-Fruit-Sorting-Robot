@@ -1,5 +1,0 @@
-train: /home/featurize/data/dataset/train/image
-val: /home/featurize/data/dataset/valid/image
-
-nc: 3
-names: ['orange', 'pear', 'apple']

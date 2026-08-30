@@ -1,0 +1,10 @@
+﻿ultralytics
+opencv-python
+pyserial
+Pillow
+numpy
+onnxruntime
+onnx
+PyYAML
+matplotlib
+seaborn

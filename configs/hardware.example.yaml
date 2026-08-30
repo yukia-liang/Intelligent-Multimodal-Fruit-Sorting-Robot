@@ -1,0 +1,16 @@
+﻿# Example hardware configuration.
+# Update these values to match the actual connected devices.
+
+voice:
+  port: COM8
+  baudrate: 9600
+
+robot_arm:
+  port: COM13
+  baudrate: 9600
+
+camera:
+  index: 1
+
+vision:
+  model: vision/model/best.onnx

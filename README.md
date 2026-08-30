@@ -1,362 +1,150 @@
-# Intelligent Multimodal Fruit Sorting Robot System
+﻿# Intelligent Multimodal Fruit Sorting Robot
 
-An intelligent fruit-sorting robot that integrates **YOLO-World visual perception**, **offline voice interaction**, and **robotic-arm execution** in a perception–decision–execution pipeline.
+An integrated multimodal robotic sorting system combining **visual perception, offline voice interaction, command understanding, real-time image processing, GUI monitoring, and robotic-arm execution**.
 
-The system is designed for low-cost, network-independent agricultural sorting and supports real-time fruit recognition, target localization, coordinate verification, and automated grasping.
+The project follows a perception–decision–execution workflow:
 
----
-
-## 🎥 System Demo
-
-<p align="center">
-  <img src="assets/videos/multimodal_sorting_robot_system_demo.gif"
-       alt="Intelligent Multimodal Fruit Sorting Robot System Demo"
-       width="900">
-</p>
-
-<p align="center">
-  <em>YOLO-World visual perception + offline voice interaction + robotic-arm fruit sorting.</em>
-</p>
-
-> The animated demo above is displayed directly in the README.  
-> Full-quality recording: `assets/videos/multimodal_sorting_robot_system_demo.mp4`
-
----
-
-## Project Overview
-
-The system combines:
-
-- **YOLO-World / YOLOv8n-World visual recognition**
-- **Offline voice command interaction**
-- **Robotic-arm control**
-- **Coordinate mapping for fruit grasping**
-- **Multi-threaded software integration**
-- **ONNX deployment for efficient inference**
-
-The overall workflow is:
-
-```text
-Voice Command
-    ↓
-GUI / Task Dispatch
-    ↓
-YOLO-World Visual Detection
-    ↓
-Target Verification & Coordinate Mapping
-    ↓
+`	ext
+Offline Voice Command
+        ↓
+Command / Target Parsing
+        ↓
+YOLO Visual Perception
+        ↓
+Target Verification
+        ↓
 Robotic Arm Control
-    ↓
-Fruit Grasping and Sorting
-```
+        ↓
+Automatic Grasping & Sorting
+`
 
----
+## System Demo
 
-## Key Features
+<p align="center">
+  <img src="assets/demo/system_demo.gif"
+       alt="Intelligent Multimodal Fruit Sorting Robot Demo"
+       width="760">
+</p>
 
-### 1. Visual Perception
-The camera captures fruit images and the YOLO-World model predicts:
+Full-quality demo:
 
-- Fruit category
-- Bounding box
-- Confidence score
-- Target center position
-
-The system additionally verifies whether the target is stable and located inside the robotic arm's graspable workspace.
-
-### 2. Offline Voice Interaction
-The voice module provides a network-independent human–computer interaction interface.
-
-Example commands include:
-
-```text
-grab apple
-grab orange
-grab pear
-```
-
-The detected command is converted into a target category and sent to the visual perception module.
-
-### 3. Robotic Arm Execution
-After visual verification, the system converts image coordinates into physical coordinates and generates the corresponding grasping action.
-
-A typical grasping sequence is:
-
-```text
-Move above target
-    ↓
-Move to grasping height
-    ↓
-Close gripper
-    ↓
-Move to sorting position
-    ↓
-Release fruit
-    ↓
-Return to initial position
-```
-
-### 4. Multi-threaded System Integration
-The software system contains multiple cooperating threads:
-
-- Main GUI thread
-- Voice-recognition thread
-- YOLO visual-detection thread
-- Robotic-arm control thread
-
-This modular design improves responsiveness and keeps perception, interaction, and execution synchronized.
-
----
-
-## Performance
-
-The project report records the following experimental results:
-
-| Metric | Result |
-|---|---:|
-| YOLO-World mAP@50 | **0.99499** |
-| Average detection time | **181.2 ms / image** |
-| Test images for inference-speed evaluation | **500** |
-| Coordinate-mapping grasping success rate | **95.7%** |
-| Number of on-site grasping attempts | **50** |
-
-The model was trained for **100 epochs** on a fruit-recognition dataset built for the project.
-
----
-
-## My Contribution
-
-My main work in this project focused on the visual perception pipeline:
-
-- Researched existing fruit-sorting technologies
-- Built and preprocessed a **3,000-image fruit dataset**
-- Developed the YOLO-World-based visual recognition module
-- Trained and validated the detection model
-- Evaluated recognition performance
-- Exported/deployed the model through **ONNX**
-- Improved real-time fruit recognition and sorting accuracy
-
----
+ssets/demo/system_demo.mp4
 
 ## Repository Structure
 
-```text
-YOLO-World-project/
+`	ext
+Intelligent-Multimodal-Fruit-Sorting-Robot/
 │
-├── dataset/
-│   └── data.yaml
+├── README.md
+├── main.py
 │
-├── demo/
-│   ├── gradio_demo.py
-│   ├── image_demo.py
-│   ├── image_prompt_demo.py
-│   ├── simple_demo.py
-│   └── video_demo.py
-│
-├── deploy/
+├── vision/
+│   ├── model/
+│   │   └── best.onnx
+│   ├── onnx_inference.py
 │   ├── export_onnx.py
-│   ├── onnx_demo.py
-│   └── easydeploy/
+│   ├── simplify_onnx.py
+│   ├── hand_detection.py
+│   └── model_test.py
 │
-├── docs/
-│   ├── installation.md
-│   ├── finetuning.md
-│   ├── deploy.md
-│   └── ...
-│
-├── results/
-│   ├── confusion_matrix.png
-│   ├── results.csv
-│   └── results.png
-│
+├── speech/
+│   └── README.md
+├── audio/
+│   └── README.md
+├── interaction/
+│   └── README.md
+├── robot/
+│   └── arm_controller.py
+├── gui/
+│   └── README.md
+├── training/
+│   └── train_yolo.py
 ├── tools/
-│   ├── train.py
-│   ├── test.py
-│   └── reparameterize_yoloworld.py
+│   └── check_annotations.py
+├── configs/
+│   └── hardware.example.yaml
+├── assets/
+│   ├── images/
+│   └── demo/
+│       ├── system_demo.gif
+│       └── system_demo.mp4
 │
-├── yolo_world/
-│   ├── datasets/
-│   ├── engine/
-│   └── models/
-│
-├── train.py
-├── test.py
-├── visual_detect.py
-├── pt2onnx.py
-├── onnx_detec.py
-└── pyproject.toml
-```
+├── requirements.txt
+├── .gitignore
+└── LICENSE
+`
 
----
+## Main System
 
-## Environment
+main.py is the complete integrated runtime.
 
-The project report used the following training/inference environment:
+It currently contains:
 
-```text
-GPU: NVIDIA RTX A4000
-PyTorch: 1.12.0
-CUDA: 11.3
-```
+- Offline voice-command reception
+- Command-to-fruit mapping
+- YOLO-based visual detection
+- OpenCV camera acquisition
+- Tkinter real-time GUI
+- Multi-threaded task coordination
+- Robotic-arm serial control
+- Automatic fruit pickup cycles
 
-For the current repository, please also check:
+## Modalities
 
-```text
-docs/installation.md
-pyproject.toml
-```
+### Vision
+The visual subsystem performs real-time image acquisition and YOLO-based fruit detection.
 
-for the latest dependency configuration.
+### Speech
+An offline voice module provides recognized commands to the Python system through serial communication.
 
----
+### Audio
+The current implementation relies on the offline speech hardware for acoustic front-end processing. The udio/ directory is reserved for future direct waveform or microphone-array processing.
 
-## Training
+### Interaction
+Recognized commands are mapped to sorting targets and dispatched to the vision and execution layers.
 
-The repository contains training scripts at both the project root and under `tools/`.
+### Robot
+The robotic-arm subsystem communicates with the servo controller through serial communication and executes predefined grasping sequences.
 
-Example:
+### GUI
+The GUI displays the camera feed, target information, voice-command state, detection state, logs, and robotic-arm status.
 
-```bash
-python train.py
-```
+## Supported Target Commands
 
-Dataset configuration:
+- Apple
+- Orange
+- Pear
 
-```text
-dataset/data.yaml
-```
+## Installation
 
----
+`ash
+pip install -r requirements.txt
+`
 
-## Evaluation
+## Run
 
-Example:
+From the repository root:
 
-```bash
-python test.py
-```
+`ash
+python main.py
+`
 
-Training and evaluation outputs can be found under:
+Before running, make sure the serial ports and camera index match your hardware.
 
-```text
-results/
-```
+Example values are documented in:
 
-Example result files:
+configs/hardware.example.yaml
 
-```text
-results/results.png
-results/confusion_matrix.png
-results/results.csv
-```
+## Model
 
----
+The packaged ONNX model is stored at:
 
-## Visualization
+ision/model/best.onnx
 
-For image-based visual detection:
+## Notes
 
-```bash
-python visual_detect.py
-```
-
-Additional demos are available in:
-
-```text
-demo/
-```
-
-including image, video, prompt-based, notebook, and Gradio examples.
-
----
-
-## ONNX Deployment
-
-The repository includes scripts for model export and ONNX inference:
-
-```bash
-python pt2onnx.py
-python onnx_detec.py
-```
-
-Additional deployment utilities are available under:
-
-```text
-deploy/
-```
-
----
-
-## System Architecture
-
-The complete multimodal sorting system follows a three-stage architecture:
-
-### Perception Layer
-- RGB camera
-- YOLO-World fruit detection
-- Offline voice command acquisition
-
-### Decision Layer
-- Target-category parsing
-- Detection verification
-- Coordinate mapping
-- Task planning
-
-### Execution Layer
-- Robotic-arm motion
-- Gripper control
-- Fruit placement
-- Conveyor coordination
-
----
-
-## Application Scenarios
-
-Potential application scenarios include:
-
-- Small and medium-sized fruit sorting facilities
-- Agricultural automation
-- Offline sorting in areas with limited network connectivity
-- Fruit classification and grading
-- Robotic picking and manipulation
-
-Future extensions may include:
-
-- Defect detection
-- Ripeness classification
-- Size grading
-- Additional fruit categories
-- Faster robotic-arm response
-- More robust recognition under occlusion and illumination changes
-
----
-
-## Contributors
-
-This project was developed as part of the **CE201 Team Project Challenge**.
-
-Advisers:
-
-- Junhua Li
-- Cheng Liu
-
-Team members:
-
-- Liyang Yu
-- Yajie Yuan
-- Yixuan Feng
-- Yichun Zhang
-- Siyun Xie
-- Yupu Liu
-
----
+The current release intentionally keeps the complete working integration in main.py instead of aggressively splitting the runtime into many dependent Python modules. This keeps the original integrated system easy to inspect and reduces the risk of breaking hardware-dependent behavior, while the repository structure clearly separates vision, speech, audio, interaction, robot, GUI, configuration, training, and demonstration assets.
 
 ## License
 
-This repository follows the license included in the project root:
-
-```text
-LICENSE
-```
-
-Please refer to that file for detailed licensing information.
+See LICENSE.
